@@ -6,3 +6,36 @@
 5. Jako użytkownik, chcę mieć możliwość wyboru języka, aby móc korzystać z biletomatu bez względu na znajomość języka lokalnego.
 6. Jako użytkownik, chcę sprawdzić poprawność transakcji przed jej finalizacją, aby uniknąć pomyłek.
 7. Jako użytkownik, chcę otrzymać potwierdzenie zakupu (np. wydruk biletu lub elektroniczny bilet), aby móc korzystać z transportu zgodnie z przepisami.
+
+## 2. Diagramy przypadków użycia
+```mermaid
+
+graph TD
+    User(("Użytkownik"))
+
+    UseCase1["Rozpoczęcie interakcji"]
+    UseCase2["Wybranie opcji anulowania"]
+    UseCase3["Komunikat o anulowaniu"]
+    UseCase4["Reset interfejsu"]
+    UseCase5["Zapis powodu anulowania"]
+
+    User --> UseCase1
+    User --> UseCase2
+    UseCase2 --> UseCase3
+    UseCase3 --> UseCase4
+
+    %% Extend relationship
+    UseCase5 -.extend.-> UseCase2
+
+    %% Include relationship
+    UseCase2 --include--> UseCase3
+
+    subgraph System
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+        UseCase5
+    end
+
+```
