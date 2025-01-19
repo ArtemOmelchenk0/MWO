@@ -44,4 +44,35 @@ graph TB
     end
 ```
 
+### 2. Anulowanie transakcji
+```mermaid
 
+graph TD
+    User(("Użytkownik"))
+
+    UseCase1["Rozpoczęcie interakcji"]
+    UseCase2["Wybranie opcji anulowania"]
+    UseCase3["Komunikat o anulowaniu"]
+    UseCase4["Reset interfejsu"]
+    UseCase5["Zapis powodu anulowania"]
+
+    User --> UseCase1
+    User --> UseCase2
+    UseCase2 --> UseCase3
+    UseCase3 --> UseCase4
+
+    %% Extend relationship
+    UseCase5 -.extend.-> UseCase2
+
+    %% Include relationship
+    UseCase2 --include--> UseCase3
+
+    subgraph System
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+        UseCase5
+    end
+
+```
