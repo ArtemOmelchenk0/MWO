@@ -73,3 +73,36 @@ graph TD
         UseCase5
     end
 ```
+### 3.  Płatność za bilet
+```mermaid
+graph TD
+    User(("Użytkownik"))
+    UseCase1["Wybór metody płatności"]
+    UseCase2["Weryfikacja metody płatności"]
+    UseCase3["Realizacja płatności"]
+    UseCase4["Potwierdzenie transakcji"]
+    UseCase5["Anulowanie transakcji"]
+    UseCase6["Obsługa błędów płatności"]
+
+    User --> UseCase1
+    UseCase1 --> UseCase2
+    UseCase2 --> UseCase3
+    UseCase3 --> UseCase4
+    
+    %% Include relationships
+    UseCase1 --include--> UseCase2
+    UseCase1 --include--> UseCase5
+    
+    %% Extend relationship
+    UseCase6 -.extend.-> UseCase3
+    
+    subgraph System Płatności
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+        UseCase5
+        UseCase6
+    end
+```
+
