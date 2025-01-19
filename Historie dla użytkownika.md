@@ -105,4 +105,33 @@ graph TD
         UseCase6
     end
 ```
+### 3. Sprawdzenie poprawności transakcji
+```mermaid
+graph TB
+    User((Użytkownik))
+
+    UseCase1[Wybór biletu i płatności]
+    UseCase2[Wyświetlenie podsumowania]
+    UseCase3[Potwierdzenie lub cofnięcie]
+    UseCase4[Kontynuacja]
+    UseCase5[Anulowanie transakcji]
+    UseCase6[Ostrzeżenie o błędzie]
+
+    User --> UseCase1
+    UseCase1 --include--> UseCase5
+    UseCase1 --> UseCase2
+    UseCase2 --> UseCase3
+    UseCase3 --> UseCase4
+    UseCase3 -.extend.-> UseCase6
+
+    subgraph System
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+        UseCase5
+        UseCase6
+    end
+```
+
 
