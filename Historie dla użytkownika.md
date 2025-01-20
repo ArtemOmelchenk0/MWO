@@ -133,7 +133,7 @@ graph TB
     end
 ```
 
-### 4. Wspólny diagram
+### 5. Wspólny diagram
 ```mermaid
 graph TB
     User((Użytkownik))
