@@ -133,4 +133,31 @@ graph TB
     end
 ```
 
+### 4. Wspólny diagram
+```mermaid
+graph TB
+    User((Użytkownik))
+
+    UseCase1[Szybki wybór rodzaju biletu]
+    UseCase2[Anulowanie transakcji]
+    UseCase3[Płatność za bilet]
+    UseCase4[Sprawdzenie poprawności transakcji]
+
+
+
+    User --> UseCase1
+    User --> UseCase3
+    User --> UseCase4
+    UseCase1 --include-->UseCase2
+    UseCase3 --include--> UseCase2
+    UseCase4 --include--> UseCase2
+
+    subgraph System
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+    end
+```
+
 
