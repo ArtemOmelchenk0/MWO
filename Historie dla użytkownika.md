@@ -56,8 +56,7 @@ graph TD
 
     User --> UseCase1
     UseCase1 --> UseCase2
-    UseCase2 --> UseCase3
-    UseCase3 --> UseCase4
+    UseCase2 --> UseCase4
 
     %% Include relationship
     UseCase2 --include--> UseCase3
@@ -85,8 +84,8 @@ graph TD
     UseCase6["Obsługa błędów płatności"]
 
     User --> UseCase1
-    UseCase1 --> UseCase2
-    UseCase2 --> UseCase3
+    
+    UseCase1 --> UseCase3
     UseCase3 --> UseCase4
     
     %% Include relationships
@@ -105,7 +104,7 @@ graph TD
         UseCase6
     end
 ```
-### 3. Sprawdzenie poprawności transakcji
+### 4. Sprawdzenie poprawności transakcji
 ```mermaid
 graph TB
     User((Użytkownik))
