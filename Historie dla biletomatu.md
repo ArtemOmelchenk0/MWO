@@ -73,7 +73,7 @@ graph TD
         UseCase7
     end
 ```
-### 3. Szybki wybór rodzaju biletu
+### 3. Wyświetlenie dostępnych biletów
 ```mermaid
 graph TB
     Biletomat((Biletomat))
@@ -129,6 +129,31 @@ graph TB
         UseCase2
         UseCase3
         UseCase4
+    end
+```
+### 5. Wspólny diagram
+```mermaid
+graph TB
+    User((Biletomat))
+
+    UseCase1[Generowanie potwierdzenia zakupu]
+    UseCase2[Realizacja płatności]
+    UseCase3[Wyświetlenie dostępnych biletów]
+    UseCase4[Reset interfejsu po anulowaniu transakcji]
+    UseCase5[Anulowanie transakcji]
+
+    User --> UseCase1
+    User --> UseCase2
+    User --> UseCase3
+    User --> UseCase4
+    UseCase2 --include-->UseCase5
+    
+    subgraph System
+        UseCase1
+        UseCase2
+        UseCase3
+        UseCase4
+        UseCase5
     end
 ```
 
