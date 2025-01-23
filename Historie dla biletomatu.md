@@ -158,54 +158,54 @@ graph TB
 ```
 ## DIAGRAMY SEKWENCJI
 ### 1. DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA GENEROWANIA POTWIERDZENIA ZAKUPU
-• **AKTOR:** UŻYTKOWNIK.  
-• **OBIEKTY:** INTERFEJS BILETOMATU, BILETOMAT, SYSTEM TRANSAKCYJNY.  
+• **AKTOR:** BILETOMAT.  
+• **OBIEKTY:** INTERFEJS BILETOMATU, UŻYTKOWNIK, SYSTEM TRANSAKCYJNY.  
 • **KOLEJNOŚĆ KOMUNIKATÓW:**  
-  1 **UŻYTKOWNIK** dokonuje płatności w **INTERFEJSIE BILETOMATU**.  
-  2 **INTERFEJS BILETOMATU** przekazuje dane do **BILETOMATU**.  
-  3 **BILETOMAT** wysyła żądanie autoryzacji płatności do **SYSTEMU TRANSAKCYJNEGO**.  
-  4 **SYSTEM TRANSAKCYJNY** przesyła potwierdzenie zakończenia transakcji do **BILETOMATU**.  
-  5 **BILETOMAT** generuje potwierdzenie zakupu.  
-  6 **BILETOMAT** informuje **INTERFEJS BILETOMATU** o sukcesie transakcji.  
-  7 **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru potwierdzenia.  
-  8 **UŻYTKOWNIK** odbiera potwierdzenie z **BILETOMATU**.  
-  9 **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru biletu.  
-  10 **UŻYTKOWNIK** odbiera bilet z **BILETOMATU**.  
+  1. **BILETOMAT** wysyła żądanie autoryzacji płatności do **SYSTEMU TRANSAKCYJNEGO**.  
+  2. **SYSTEM TRANSAKCYJNY** przesyła potwierdzenie zakończenia transakcji do **BILETOMATU**.  
+  3. **BILETOMAT** generuje potwierdzenie zakupu.  
+  4. **BILETOMAT** informuje **INTERFEJS BILETOMATU** o sukcesie transakcji.  
+  5. **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru potwierdzenia.  
+  6. **UŻYTKOWNIK** odbiera potwierdzenie z **BILETOMATU**.  
+  7. **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru biletu.  
+  8. **UŻYTKOWNIK** odbiera bilet z **BILETOMATU**.  
 
 #### **SCENARIUSZ ALTERNATYWNY 1 (BŁĄD GENEROWANIA POTWIERDZENIA):**  
-  5a **BILETOMAT** wykrywa błąd podczas generowania potwierdzenia.  
-  6a **BILETOMAT** informuje **INTERFEJS BILETOMATU** o błędzie.  
-  7a **INTERFEJS BILETOMATU** wyświetla użytkownikowi komunikat o błędzie.  
-  8a **INTERFEJS BILETOMATU** zgłasza błąd do **SYSTEMU TRANSAKCYJNEGO**.  
-  9a **SYSTEM TRANSAKCYJNY** potwierdza otrzymanie zgłoszenia błędu.  
-  10a **UŻYTKOWNIK** wybiera opcję ponownej próby lub zwrotu środków w **INTERFEJSIE BILETOMATU**.  
+  3a. **BILETOMAT** wykrywa błąd podczas generowania potwierdzenia.  
+  4a. **BILETOMAT** informuje **INTERFEJS BILETOMATU** o błędzie.  
+  5a. **INTERFEJS BILETOMATU** wyświetla użytkownikowi komunikat o błędzie.  
+  6a. **INTERFEJS BILETOMATU** zgłasza błąd do **SYSTEMU TRANSAKCYJNEGO**.  
+  7a. **SYSTEM TRANSAKCYJNY** potwierdza otrzymanie zgłoszenia błędu.    
 
 ### WIZUALIZACJA DIAGRAMU SEKWENCJI
 ```mermaid
 sequenceDiagram
-    participant U as Użytkownik
-    participant IB as Interfejs Biletomatu
     participant B as Biletomat
     participant ST as System Transakcyjny
+    participant IB as Interfejs Biletomatu
+    participant U as Użytkownik
 
-        U->>IB: Dokonanie płatności
-        IB->>B: Przekazanie danych do biletomatu
-        B->>ST: Żądanie autoryzacji płatności
-        ST-->>B: Potwierdzenie zakończenia transakcji
-    alt Prawidłowy przebieg procesu
+    B->>ST: Żądanie autoryzacji płatności
+    ST-->>B: Potwierdzenie zakończenia transakcji
+    alt Scenariusz główny
         B->>B: Generowanie potwierdzenia
-        B-->>IB: Informacja o sukcesie transakcji
-        IB-->>U: Powiadomienie o odbiorze podtwierdzenia
+        B->>IB: Informacja o potwierdzeniu zakupu  
+        IB->>U: Powiadomienie o odbiorze potwierdzenia
         U->>B: Odbiór potwierdzenia
-        B-->>U:     
-        IB-->>U: Powiadomienie o odbiorze biletu
+        B-->>U:  
+        U-->>IB:    
+        IB->>U: Powiadomienie o odbiorze biletu
         U->>B: Odbiór biletu
-        B-->>U:     
-    else Błąd generowania potwierdzenia
-        B->>B: Wykrycie błędu podczas generowania
+        B-->>U:  
+        U-->>IB: 
+        IB-->>B:  
+
+    else Błąd podczas generowania potwierdzenia
+        B->>B: Wykrycie błędu generowania
         B->>IB: Informacja o błędzie
-        IB-->>U: Komunikat o błędzie
-        B->>ST: Zgłoszenie błędu do systemu transakcyjnego
+        IB->>U: Komunikat o błędzie
+        U-->>IB: 
+        IB-->>ST: Zgłoszenie błędu do systemu transakcyjnego
         ST-->>B: Potwierdzenie otrzymania zgłoszenia
     end
 ```
@@ -214,31 +214,31 @@ sequenceDiagram
 • **AKTOR:** Biletomat, Użytkownik.
 • **OBIEKTY:** Serwer aplikacji, Baza danych.
 • **KOLEJNOŚĆ KOMUNIKATÓW:**  
-	1	**Użytkownik**: Podchodzi do biletomatu i inicjuje interakcję.
-	2	**Biletomat**: Wyświetla ekran powitalny użytkownikowi.
-	3	**Biletomat**: Wysyła zapytanie do serwera aplikacji o listę dostępnych biletów.
-	4	**Serwer aplikacji**: Przekazuje zapytanie do bazy danych w celu uzyskania aktualnej listy biletów.
-	5	**Baza danych**: Zwraca listę dostępnych biletów do serwera aplikacji.
-	6	**Serwer aplikacji**: Przekazuje listę biletów do biletomatu.
-	7	**Biletomat**: Wyświetla listę kategorii biletów i szczegóły na ekranie.
-	8	**Biletomat**: Czeka na wybór użytkownika.
+  1. **Użytkownik**: Podchodzi do biletomatu i inicjuje interakcję.
+  2. **Biletomat**: Wyświetla ekran powitalny użytkownikowi.
+  3. **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę dostępnych biletów.
+  4. **Serwer aplikacji**: Przekazuje zapytanie do bazy danych w celu uzyskania aktualnej listy biletów.
+  5. **Baza danych**: Zwraca listę dostępnych biletów do serwera aplikacji.
+  6. **Serwer aplikacji**: Przekazuje listę biletów do biletomatu.
+  7. **Biletomat**: Wyświetla listę kategorii biletów i szczegóły na ekranie.
+  8. **Biletomat**: Czeka na wybór użytkownika.
 
 #### Scenariusze alternatywne:
 
 
 **Scenariusz alternatywny 1**: Brak połączenia z serwerem aplikacji
-	3a **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
-	4a **Serwer aplikacji**: Nie odpowiada z powodu awarii sieci lub błędu.
-	5a **Biletomat**: Wyświetla komunikat o braku możliwości pobrania danych i proponuje kontynuację w trybie offline (np. wyświetlenie wcześniej zapisanych danych).
-	6a **Biletomat**: Wyświetla listę biletów zapisanych lokalnie na ekranie.
+  3a. **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
+  4a. **Serwer aplikacji**: Nie odpowiada z powodu awarii sieci lub błędu.
+  5a. **Biletomat**: Wyświetla komunikat o braku możliwości pobrania danych i proponuje kontynuację w trybie offline (np. wyświetlenie wcześniej zapisanych danych).
+  6a. **Biletomat**: Wyświetla listę biletów zapisanych lokalnie na ekranie.
 
 
 **Scenariusz alternatywny 2**: Brak biletów w bazie danych
-	3b **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
-	4b **Serwer aplikacji**: Przekazuje zapytanie do bazy danych.
-	5b **Baza danych**: Zwraca pustą listę biletów.
-	6b **Serwer aplikacji**: Przekazuje informację o braku biletów do biletomatu.
-	7b **Biletomat**: Wyświetla komunikat o braku dostępnych biletów i sugeruje spróbowanie ponownie później.
+  3b. **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
+  4b. **Serwer aplikacji**: Przekazuje zapytanie do bazy danych.
+  5b. **Baza danych**: Zwraca pustą listę biletów.
+  6b. **Serwer aplikacji**: Przekazuje informację o braku biletów do biletomatu.
+  7b. **Biletomat**: Wyświetla komunikat o braku dostępnych biletów i sugeruje spróbowanie ponownie później.
 
 ### WIZUALIZACJA DIAGRAMU SEKWENCJI
 ```mermaid
