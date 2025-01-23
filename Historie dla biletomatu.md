@@ -209,4 +209,65 @@ sequenceDiagram
         ST-->>B: Potwierdzenie otrzymania zgłoszenia
     end
 ```
+### 2. SCENARIUSZ DLA PRZYPADKU UŻYCIA WSWIETLENIE DOSTĘPNYCH BILETÓW
 
+• **AKTOR:** Biletomat, Użytkownik.
+• **OBIEKTY:** Serwer aplikacji, Baza danych.
+• **KOLEJNOŚĆ KOMUNIKATÓW:**  
+	1	**Użytkownik**: Podchodzi do biletomatu i inicjuje interakcję.
+	2	**Biletomat**: Wyświetla ekran powitalny użytkownikowi.
+	3	**Biletomat**: Wysyła zapytanie do serwera aplikacji o listę dostępnych biletów.
+	4	**Serwer aplikacji**: Przekazuje zapytanie do bazy danych w celu uzyskania aktualnej listy biletów.
+	5	**Baza danych**: Zwraca listę dostępnych biletów do serwera aplikacji.
+	6	**Serwer aplikacji**: Przekazuje listę biletów do biletomatu.
+	7	**Biletomat**: Wyświetla listę kategorii biletów i szczegóły na ekranie.
+	8	**Biletomat**: Czeka na wybór użytkownika.
+
+#### Scenariusze alternatywne:
+
+
+**Scenariusz alternatywny 1**: Brak połączenia z serwerem aplikacji
+	3a **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
+	4a **Serwer aplikacji**: Nie odpowiada z powodu awarii sieci lub błędu.
+	5a **Biletomat**: Wyświetla komunikat o braku możliwości pobrania danych i proponuje kontynuację w trybie offline (np. wyświetlenie wcześniej zapisanych danych).
+	6a **Biletomat**: Wyświetla listę biletów zapisanych lokalnie na ekranie.
+
+
+**Scenariusz alternatywny 2**: Brak biletów w bazie danych
+	3b **Biletomat**: Wysyła zapytanie do serwera aplikacji o listę biletów.
+	4b **Serwer aplikacji**: Przekazuje zapytanie do bazy danych.
+	5b **Baza danych**: Zwraca pustą listę biletów.
+	6b **Serwer aplikacji**: Przekazuje informację o braku biletów do biletomatu.
+	7b **Biletomat**: Wyświetla komunikat o braku dostępnych biletów i sugeruje spróbowanie ponownie później.
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+    participant U as Użytkownik
+    participant B as Biletomat
+    participant S as Serwer aplikacji
+    participant D as Baza danych
+
+    Note over U,D: Scenariusz główny
+    U->>B: Inicjuje interakcję
+    B->>U: Wyświetla ekran powitalny
+    U-->>B: 
+    
+    B->>S: Wysyła zapytanie o listę biletów
+    alt Scenariusz główny
+        S->>D: Przekazuje zapytanie o listę biletów
+        D-->>S: Zwraca listę dostępnych biletów
+        S-->>B: Przekazuje listę biletów
+        B-->>U: Czeka na wybór użytkownika
+    else Scenariusz alternatywny 1: Brak połączenia
+        S-->>B: Brak odpowiedzi (timeout)
+        B->>U: Przekazanie komunikatu o błędzie
+        B->>U: Przekazuje lokalnie zapisane bilety
+    else Scenariusz alternatywny 2: Brak biletów
+        S->>D: Przekazuje zapytanie o listę biletów
+        D-->>S: Zwraca pustą listę
+        S-->>B: Przekazuje informację o braku biletów
+        B->>U: Wyświetla komunikat o braku biletów
+        
+    end
+```
