@@ -214,5 +214,55 @@ sequenceDiagram
     end
 ```
 
+### 2. Scenariusz dla przypadku użycia " Szybki wybór rodzaju biletu"
+
+**Aktor:** Użytkownik.
+
+**Obiekty:** Interfejs biletomatu, serwer aplikacji, Baza danych biletów.
+
+**Kolejność komunikatów:**
+
+  1. Użytkownik rozpoczyna interakcję z biletomatem.
+  2. Interfejs wyświetla dostępne kategorie biletów (np. jednorazowe, okresowe).
+  3. Użytkownik wybiera kategorię biletu.
+  4. Interfejs przesyła wybór do serwera.
+  5. Serwer sprawdza dostępne bilety w bazie danych.
+  6. Baza danych zwraca listę biletów do serwera.
+  7. Serwer przekazuje listę biletów do interfejsu.
+  8. Interfejs wyświetla listę biletów użytkownikowi.
+  9. Użytkownik wybiera konkretny bilet.
+  10. Interfejs wyświetla podsumowanie wyboru.
+  11. Użytkownik potwierdza wybór.
+  12. serwer przetwarza transakcję.
+  13. Baza danych aktualizuje stan biletów.
+  14. System biletowy zwraca potwierdzenie do interfejsu.
+  15. Interfejs wyświetla potwierdzenie transakcji użytkownikowi.
 
 
+### Diagram sekwencji dla przypadku użycia " Szybki wybór rodzaju biletu"
+
+```mermaid
+sequenceDiagram
+    participant U as Użytkownik
+    participant B as Interfejs biletomatu
+    participant S as Serwer aplikacji
+    participant D as Baza danych biletów
+
+    Note over U,D: Scenariusz główny
+    U->>B: Rozpoczyna interakcję
+    B->>U: Wyświetla dostępne kategorie biletów
+    U->>B: Wybiera kategorię biletu
+    B->>S: Przesyła wybór kategorii
+    S->>D: Sprawdza dostępne bilety
+    D-->>S: Zwraca listę biletów
+    S-->>B: Przekazuje listę biletów
+    B->>U: Wyświetla listę biletów
+    U->>B: Wybiera konkretny bilet
+    B->>U: Wyświetla podsumowanie wyboru
+    U->>B: Potwierdza wybór
+    B->>S: Przesyła potwierdzenie
+    S->>D: Aktualizuje stan biletów
+    D-->>S: Zwraca potwierdzenie aktualizacji
+    S-->>B: Przekazuje potwierdzenie transakcji
+    B->>U: Wyświetla potwierdzenie transakcji
+```
