@@ -156,4 +156,56 @@ graph TB
         UseCase5
     end
 ```
+## DIAGRAMY SEKWENCJI
+### 1. DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA GENEROWANIA POTWIERDZENIA ZAKUPU
+• **AKTOR:** UŻYTKOWNIK.  
+• **OBIEKTY:** INTERFEJS BILETOMATU, BILETOMAT, SYSTEM TRANSAKCYJNY.  
+• **KOLEJNOŚĆ KOMUNIKATÓW:**  
+  1 **UŻYTKOWNIK** dokonuje płatności w **INTERFEJSIE BILETOMATU**.  
+  2 **INTERFEJS BILETOMATU** przekazuje dane do **BILETOMATU**.  
+  3 **BILETOMAT** wysyła żądanie autoryzacji płatności do **SYSTEMU TRANSAKCYJNEGO**.  
+  4 **SYSTEM TRANSAKCYJNY** przesyła potwierdzenie zakończenia transakcji do **BILETOMATU**.  
+  5 **BILETOMAT** generuje potwierdzenie zakupu.  
+  6 **BILETOMAT** informuje **INTERFEJS BILETOMATU** o sukcesie transakcji.  
+  7 **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru potwierdzenia.  
+  8 **UŻYTKOWNIK** odbiera potwierdzenie z **BILETOMATU**.  
+  9 **INTERFEJS BILETOMATU** wyświetla użytkownikowi powiadomienie o możliwości odbioru biletu.  
+  10 **UŻYTKOWNIK** odbiera bilet z **BILETOMATU**.  
+
+#### **SCENARIUSZ ALTERNATYWNY 1 (BŁĄD GENEROWANIA POTWIERDZENIA):**  
+  5a **BILETOMAT** wykrywa błąd podczas generowania potwierdzenia.  
+  6a **BILETOMAT** informuje **INTERFEJS BILETOMATU** o błędzie.  
+  7a **INTERFEJS BILETOMATU** wyświetla użytkownikowi komunikat o błędzie.  
+  8a **INTERFEJS BILETOMATU** zgłasza błąd do **SYSTEMU TRANSAKCYJNEGO**.  
+  9a **SYSTEM TRANSAKCYJNY** potwierdza otrzymanie zgłoszenia błędu.  
+  10a **UŻYTKOWNIK** wybiera opcję ponownej próby lub zwrotu środków w **INTERFEJSIE BILETOMATU**.  
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+    participant U as Użytkownik
+    participant IB as Interfejs Biletomatu
+    participant B as Biletomat
+    participant ST as System Transakcyjny
+
+        U->>IB: Dokonanie płatności
+        IB->>B: Przekazanie danych do biletomatu
+        B->>ST: Żądanie autoryzacji płatności
+        ST-->>B: Potwierdzenie zakończenia transakcji
+    alt Prawidłowy przebieg procesu
+        B->>B: Generowanie potwierdzenia
+        B-->>IB: Informacja o sukcesie transakcji
+        IB-->>U: Powiadomienie o odbiorze podtwierdzenia
+        U->>B: Odbiór potwierdzenia
+        IB-->>U: Powiadomienie o odbiorze biletu
+        U->>B: Odbiór biletu
+    else Błąd generowania potwierdzenia
+        B->>B: Wykrycie błędu podczas generowania
+        B->>IB: Informacja o błędzie
+        IB-->>U: Komunikat o błędzie
+        IB->>ST: Zgłoszenie błędu do systemu transakcyjnego
+        ST-->>B: Potwierdzenie otrzymania zgłoszenia
+        U->>IB: Wybór opcji (ponowna próba lub zwrot środków)
+    end
+```
 
