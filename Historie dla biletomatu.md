@@ -10,7 +10,7 @@
 ### 1. Generowanie potwierdzenia zakupu
 ```mermaid
 graph TD
-    Biletomat(("Biletomat"))
+    Biletomat(("System Transakcyjny"))
     UseCase1["Potwierdzenie zakończenia transakcji"]
     UseCase2["Generowanie potwierdzenia"]
     UseCase3["Informacja o potwierdzeniu"]
@@ -29,7 +29,7 @@ graph TD
     %% Extend relationship
     UseCase6 -.extend.-> UseCase2
 
-    subgraph System płatniczy
+    subgraph Biletomat
         UseCase1
         UseCase2
         UseCase3
