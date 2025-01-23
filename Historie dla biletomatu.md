@@ -10,7 +10,7 @@
 ### 1. Generowanie potwierdzenia zakupu
 ```mermaid
 graph TD
-    Biletomat(("System Transakcyjny"))
+    ST(("System Transakcyjny"))
     UseCase1["Potwierdzenie zakończenia transakcji"]
     UseCase2["Generowanie potwierdzenia"]
     UseCase3["Informacja o potwierdzeniu"]
@@ -18,13 +18,13 @@ graph TD
     UseCase5["Generowanie biletu"]
     UseCase6["Błąd generowania"]
 
-    Biletomat --> UseCase1
+    ST --> UseCase1
     UseCase1 --> UseCase2
     UseCase2 --> UseCase3
     UseCase3 --> UseCase4
 
     %% Include relationship
-    UseCase2 --include--> UseCase5
+    UseCase2 -.include.-> UseCase5
 
     %% Extend relationship
     UseCase6 -.extend.-> UseCase2
@@ -57,8 +57,8 @@ graph TD
     UseCase3 --> UseCase4
 
     %% Include relationships
-    UseCase1 --include--> UseCase5
-    UseCase1 --include--> UseCase6
+    UseCase1 -.include.-> UseCase5
+    UseCase1 -.include.-> UseCase6
 
     %% Extend relationship
     UseCase7 -.extend.-> UseCase1
@@ -91,7 +91,7 @@ graph TB
     UseCase3 --> UseCase4
 
     %% Include relationship
-    UseCase2 --include--> UseCase6
+    UseCase2 -.include.-> UseCase6
 
     %% Extend relationship
     UseCase5 -.extend.-> UseCase2
@@ -119,7 +119,7 @@ graph TB
     UseCase1 --> UseCase3
 
     %% Include relationship
-    UseCase1 --include--> UseCase2
+    UseCase1 -.include.-> UseCase2
 
     %% Extend relationship
     UseCase4 -.extend.-> UseCase1
@@ -140,20 +140,17 @@ graph TB
     UseCase2[Realizacja płatności]
     UseCase3[Wyświetlenie dostępnych biletów]
     UseCase4[Reset interfejsu po anulowaniu transakcji]
-    UseCase5[Anulowanie transakcji]
 
     User --> UseCase1
     User --> UseCase2
     User --> UseCase3
     User --> UseCase4
-    UseCase2 --include-->UseCase5
     
     subgraph System
         UseCase1
         UseCase2
         UseCase3
         UseCase4
-        UseCase5
     end
 ```
 ## DIAGRAMY SEKWENCJI
