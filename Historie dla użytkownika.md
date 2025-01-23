@@ -160,9 +160,61 @@ graph TB
     end
 ```
 
-## Diagramy sekwencji
+## DIAGRAMY SEKWENCJI  
+### 1. DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA ANULOWANIA TRANSAKCJI  
+- **AKTOR:** UŻYTKOWNIK.  
+- **OBIEKTY:** INTERFEJS BILETOMATU, BILETOMAT, SYSTEM TRANSAKCYJNY.  
+- **KOLEJNOŚĆ KOMUNIKATÓW:**  
+  1. **UŻYTKOWNIK** rozpoczyna proces zakupu biletu poprzez **INTERFEJS BILETOMATU**.  
+  2. **UŻYTKOWNIK** wybiera opcję "Anuluj" w dowolnym momencie procesu.  
+  3. **INTERFEJS BILETOMATU** przekazuje żądanie anulowania do **BILETOMATU**.  
+  4. **BILETOMAT** wysyła żądanie anulowania transakcji do **SYSTEMU TRANSAKCYJNEGO**.  
+  5. **SYSTEM TRANSAKCYJNY** przetwarza żądanie i zwraca potwierdzenie anulowania.  
+  6. **BILETOMAT** przekazuje potwierdzenie do **INTERFEJSU BILETOMATU**.  
+  7. **INTERFEJS BILETOMATU** wyświetla **UŻYTKOWNIKOWI** komunikat potwierdzający anulowanie transakcji.  
+  8. **INTERFEJS BILETOMATU** resetuje się do ekranu głównego.  
 
-### 1. Scenariusz dla przypadku użycia " Szybki wybór rodzaju biletu"
+#### **SCENARIUSZ OPCJONALNY (ZAPISANIE POWODU ANULOWANIA):**  
+  5a. **SYSTEM TRANSAKCYJNY** prosi **BILETOMAT** o podanie powodu anulowania.  
+  6a. **BILETOMAT** przekazuje prośbę do **INTERFEJSU BILETOMATU**.  
+  7a. **INTERFEJS BILETOMATU** wyświetla **UŻYTKOWNIKOWI** formularz do wprowadzenia powodu anulowania.  
+  8a. **UŻYTKOWNIK** wprowadza powód anulowania.  
+  9a. **INTERFEJS BILETOMATU** przekazuje powód do **BILETOMATU**, a następnie do **SYSTEMU TRANSAKCYJNEGO**.  
+  10a. **SYSTEM TRANSAKCYJNY** zapisuje powód anulowania i zwraca potwierdzenie.  
+  11a. **INTERFEJS BILETOMATU** wyświetla komunikat o anulowaniu i resetuje się do ekranu głównego. 
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI  
+```mermaid
+sequenceDiagram
+    participant User as UŻYTKOWNIK
+    participant UI as INTERFEJS BILETOMATU
+    participant B as BILETOMAT
+    participant ST as SYSTEM TRANSAKCYJNY
+
+    User->>UI: Rozpoczęcie procesu zakupu biletu
+    User->>UI: Wybór opcji "Anuluj"
+    UI->>B: Przekazanie żądania anulowania
+    B->>ST: Żądanie anulowania transakcji
+    ST-->>B: Potwierdzenie anulowania
+    B-->>UI: Przekazanie potwierdzenia
+    UI-->>User: Wyświetlenie komunikatu o anulowaniu
+    UI->>UI: Reset do ekranu głównego
+
+    opt Zapisanie powodu anulowania
+        ST->>B: Prośba o podanie powodu anulowania
+        B->>UI: Przekazanie prośby
+        UI-->>User: Wyświetlenie formularza powodu anulowania
+        User->>UI: Wprowadzenie powodu anulowania
+        UI->>B: Przekazanie powodu
+        B->>ST: Przekazanie powodu
+        ST-->>B: Potwierdzenie zapisu powodu
+        B-->>UI: Przekazanie potwierdzenia
+        UI-->>User: Wyświetlenie komunikatu o anulowaniu
+        UI->>UI: Reset do ekranu głównego
+    end
+```
+
+### 2. Scenariusz dla przypadku użycia " Szybki wybór rodzaju biletu"
 
 **Aktor:** Użytkownik.
 
