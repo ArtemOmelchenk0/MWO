@@ -197,15 +197,16 @@ sequenceDiagram
         B-->>IB: Informacja o sukcesie transakcji
         IB-->>U: Powiadomienie o odbiorze podtwierdzenia
         U->>B: Odbiór potwierdzenia
+        B-->>U:     
         IB-->>U: Powiadomienie o odbiorze biletu
         U->>B: Odbiór biletu
+        B-->>U:     
     else Błąd generowania potwierdzenia
         B->>B: Wykrycie błędu podczas generowania
         B->>IB: Informacja o błędzie
         IB-->>U: Komunikat o błędzie
-        IB->>ST: Zgłoszenie błędu do systemu transakcyjnego
+        B->>ST: Zgłoszenie błędu do systemu transakcyjnego
         ST-->>B: Potwierdzenie otrzymania zgłoszenia
-        U->>IB: Wybór opcji (ponowna próba lub zwrot środków)
     end
 ```
 
