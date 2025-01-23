@@ -24,9 +24,9 @@ graph TB
     UseCase8[Weryfikacja dostępnych biletów]
 
     User --> UseCase1
+    User --> UseCase6
     UseCase1 --> UseCase2
-    UseCase1 --include-->UseCase6
-    UseCase2 --include--> UseCase8
+    UseCase2 -.include.-> UseCase8
     UseCase2 --> UseCase3
     UseCase3 --> UseCase4
     UseCase4 --> UseCase5
@@ -59,7 +59,7 @@ graph TD
     UseCase2 --> UseCase4
 
     %% Include relationship
-    UseCase2 --include--> UseCase3
+    UseCase2 -.include.-> UseCase3
 
     %% Extend relationship
     UseCase5 -.extend.-> UseCase2
@@ -84,13 +84,13 @@ graph TD
     UseCase6["Obsługa błędów płatności"]
 
     User --> UseCase1
-    
+    User --> UseCase5
     UseCase1 --> UseCase3
     UseCase3 --> UseCase4
     
     %% Include relationships
-    UseCase1 --include--> UseCase2
-    UseCase1 --include--> UseCase5
+    UseCase1 -.include.-> UseCase2
+    
     
     %% Extend relationship
     UseCase6 -.extend.-> UseCase3
@@ -117,7 +117,7 @@ graph TB
     UseCase6[Ostrzeżenie o błędzie]
 
     User --> UseCase1
-    UseCase1 --include--> UseCase5
+    UseCase1 -.include.-> UseCase5
     UseCase1 --> UseCase2
     UseCase2 --> UseCase3
     UseCase3 --> UseCase4
@@ -148,9 +148,9 @@ graph TB
     User --> UseCase1
     User --> UseCase3
     User --> UseCase4
-    UseCase1 --include-->UseCase2
-    UseCase3 --include--> UseCase2
-    UseCase4 --include--> UseCase2
+    UseCase1 -.include.->UseCase2
+    UseCase3 -.include.-> UseCase2
+    UseCase4 -.include.-> UseCase2
 
     subgraph System
         UseCase1
