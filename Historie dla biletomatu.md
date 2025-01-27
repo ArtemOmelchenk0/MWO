@@ -268,3 +268,107 @@ sequenceDiagram
         
     end
 ```
+
+##**OPIS KLAS**
+
+### Analiza przypadku użycia "Wyświetlenie dostępnych biletów"
+
+#### Klasy:
+1. **Biletomat**
+   - **Atrybuty**: 
+     - `String nazwaBiletomatu`
+     - `List<Bilet> lokalnaListaBiletów`
+   - **Metody**:
+     - `void uruchomEkranPowitalny()`
+     - `void pobierzListeBiletów()`
+     - `void wyświetlBilety()`
+     - `void czekajNaWybórUżytkownika()`
+     - `void wyświetlKomunikatBłąd(String komunikat)`
+
+2. **SerwerAplikacji**
+   - **Atrybuty**:
+     - `String adresSerwera`
+   - **Metody**:
+     - `List<Bilet> pobierzListeBiletów()`
+     - `void przekażListeBiletów(Biletomat biletomat)`
+
+3. **BazaDanych**
+   - **Atrybuty**:
+     - `Map<String, Bilet> bilety`
+   - **Metody**:
+     - `List<Bilet> zwróćListeBiletów()`
+     - `void dodajBilet(Bilet bilet)`
+     - `void usuńBilet(String idBiletu)`
+
+4. **Bilet**
+   - **Atrybuty**:
+     - `String idBiletu`
+     - `String kategoria`
+     - `double cena`
+     - `Date dataWażności`
+   - **Metody**:
+     - `String getKategoria()`
+     - `double getCena()`
+     - `Date getDataWażności()`
+
+5. **Użytkownik**
+   - **Atrybuty**:
+     - `String nazwaUżytkownika`
+   - **Metody**:
+     - `void inicjujInterakcję(Biletomat biletomat)`
+
+#### Relacje:
+- **Biletomat** jest powiązany z **SerwerAplikacji** (asocjacja) w celu pobrania listy biletów.
+- **SerwerAplikacji** jest powiązany z **BazaDanych** (asocjacja) w celu uzyskania listy biletów.
+- **Biletomat** przechowuje lokalną listę biletów (agregacja) w przypadku braku połączenia z serwerem.
+- **Użytkownik** inicjuje interakcję z **Biletomat** (asocjacja).
+
+### Diagram klas
+
+```mermaid
+classDiagram
+    class Biletomat {
+        - String nazwaBiletomatu
+        - List<Bilet> lokalnaListaBiletów
+        + void uruchomEkranPowitalny()
+        + void pobierzListeBiletów()
+        + void wyświetlBilety()
+        + void czekajNaWybórUżytkownika()
+        + void wyświetlKomunikatBłąd(String komunikat)
+    }
+
+    class SerwerAplikacji {
+        - String adresSerwera
+        + List<Bilet> pobierzListeBiletów()
+        + void przekażListeBiletów(Biletomat biletomat)
+    }
+
+    class BazaDanych {
+        - Map<String, Bilet> bilety
+        + List<Bilet> zwróćListeBiletów()
+        + void dodajBilet(Bilet bilet)
+        + void usuńBilet(String idBiletu)
+    }
+
+    class Bilet {
+        - String idBiletu
+        - String kategoria
+        - double cena
+        - Date dataWażności
+        + String getKategoria()
+        + double getCena()
+        + Date getDataWażności()
+    }
+
+    class Użytkownik {
+        - String nazwaUżytkownika
+        + void inicjujInterakcję(Biletomat biletomat)
+    }
+
+    Biletomat --> SerwerAplikacji : pobiera listę biletów
+    SerwerAplikacji --> BazaDanych : pobiera listę biletów
+    Biletomat --> Bilet : przechowuje lokalnie
+    Użytkownik --> Biletomat : inicjuje interakcję
+```
+
+
