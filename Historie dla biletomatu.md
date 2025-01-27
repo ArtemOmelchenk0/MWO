@@ -268,3 +268,81 @@ sequenceDiagram
         
     end
 ```
+
+## Diagramy klas
+
+### Analiza przypadku użycia "Generowanie potwierdzenia zakupu"
+
+#### Klasy:
+1. **Biletomat**
+   - **Atrybuty:**
+     - `string transactionId` – identyfikator transakcji.
+     - `string confirmationType` – typ potwierdzenia (np. drukowane, elektroniczne).
+   - **Metody:**
+     - `void generujPotwierdzenie()` – generuje potwierdzenie zakupu.
+     - `void informujUzytkownika()` – informuje użytkownika o możliwości odbioru potwierdzenia.
+     - `void oczekujNaOdbior()` – czeka na odbiór potwierdzenia przez użytkownika.
+     - `void obsluzBladGenerowania()` – obsługuje błąd podczas generowania potwierdzenia.
+
+2. **System Transakcyjny**
+   - **Atrybuty:**
+     - `map<string, Transaction> transactions` – mapa przechowująca transakcje.
+   - **Metody:**
+     - `bool potwierdzZakonczenieTransakcji(string transactionId)` – potwierdza zakończenie transakcji.
+     - `void zglosBlad(string transactionId, string errorMessage)` – zgłasza błąd do systemu.
+
+3. **Interfejs Biletomatu**
+   - **Atrybuty:**
+     - `string currentScreen` – aktualnie wyświetlany ekran.
+   - **Metody:**
+     - `void wyswietlPowiadomienie(string komunikat)` – wyświetla powiadomienie użytkownikowi.
+     - `void wyswietlBlad(string komunikat)` – wyświetla komunikat o błędzie.
+
+4. **Użytkownik**
+   - **Atrybuty:**
+     - `string username` – nazwa użytkownika.
+   - **Metody:**
+     - `void odbierzPotwierdzenie()` – odbiera potwierdzenie zakupu.
+     - `void odbierzBilet()` – odbiera bilet.
+
+#### Relacje:
+- **Biletomat** komunikuje się z **Systemem Transakcyjnym** w celu potwierdzenia zakończenia transakcji.
+- **Biletomat** współpracuje z **Interfejsem Biletomatu**, aby informować użytkownika o potwierdzeniu zakupu i ewentualnych błędach.
+- **Użytkownik** odbiera potwierdzenie i bilet z **Biletomatu**.
+
+---
+
+### Diagram klas dla przypadku użycia "Generowanie potwierdzenia zakupu"
+
+```mermaid
+classDiagram
+    class Biletomat {
+        - string transactionId
+        - string confirmationType
+        + void generujPotwierdzenie()
+        + void informujUzytkownika()
+        + void oczekujNaOdbior()
+        + void obsluzBladGenerowania()
+    }
+
+    class SystemTransakcyjny {
+        - map~string, Transaction~ transactions
+        + bool potwierdzZakonczenieTransakcji(string transactionId)
+        + void zglosBlad(string transactionId, string errorMessage)
+    }
+
+    class InterfejsBiletomatu {
+        - string currentScreen
+        + void wyswietlPowiadomienie(string komunikat)
+        + void wyswietlBlad(string komunikat)
+    }
+
+    class Użytkownik {
+        - string username
+        + void odbierzPotwierdzenie()
+        + void odbierzBilet()
+    }
+
+    Biletomat --> SystemTransakcyjny : komunikuje się
+    Biletomat --> InterfejsBiletomatu : współpracuje
+    Użytkownik --> Biletomat : odbiera potwierdzenie i bilet
