@@ -267,7 +267,7 @@ sequenceDiagram
     B->>U: Wyświetla potwierdzenie transakcji
 ```
 
-## **OPIS KLAS**
+## **DIAGRAMY KLAS**
 
 ### Analiza klas dla przypadku użycia "Szybki wybór rodzaju biletu"
 
@@ -372,3 +372,80 @@ classDiagram
     Biletomat --> Bilet : wyświetla podsumowanie
     Użytkownik --> Biletomat : inicjuje interakcję
 ``` 
+
+### Analiza przypadku użycia "Anulowanie transakcji"
+
+#### Klasy:
+1. **Użytkownik**
+   - **Atrybuty:**
+     - `string username` – nazwa użytkownika.
+     - `string sessionId` – identyfikator sesji użytkownika.
+   - **Metody:**
+     - `void rozpocznijTransakcje()` – rozpoczyna proces zakupu biletu.
+     - `void anulujTransakcje()` – inicjuje anulowanie transakcji.
+
+2. **Interfejs Biletomatu**
+   - **Atrybuty:**
+     - `string currentScreen` – aktualnie wyświetlany ekran.
+   - **Metody:**
+     - `void wyswietlKomunikat(string komunikat)` – wyświetla komunikat użytkownikowi.
+     - `void resetujInterfejs()` – resetuje interfejs do ekranu głównego.
+     - `void wyswietlFormularzPowodu()` – wyświetla formularz do wprowadzenia powodu anulowania.
+
+3. **Biletomat**
+   - **Atrybuty:**
+     - `string transactionId` – identyfikator transakcji.
+   - **Metody:**
+     - `void przetwarzajAnulowanie()` – przetwarza żądanie anulowania transakcji.
+     - `void zapiszPowodAnulowania(string powod)` – zapisuje powód anulowania.
+
+4. **System Transakcyjny**
+   - **Atrybuty:**
+     - `map<string, Transaction> transactions` – mapa przechowująca transakcje.
+   - **Metody:**
+     - `bool anulujTransakcje(string transactionId)` – anuluje transakcję.
+     - `void zapiszPowodAnulowania(string transactionId, string powod)` – zapisuje powód anulowania.
+
+#### Relacje:
+- **Użytkownik** korzysta z **Interfejsu Biletomatu** do rozpoczęcia i anulowania transakcji.
+- **Interfejs Biletomatu** komunikuje się z **Biletomatem** w celu przetworzenia anulowania.
+- **Biletomat** współpracuje z **Systemem Transakcyjnym** w celu anulowania transakcji i zapisania powodu anulowania.
+
+---
+
+### Diagram klas dla przypadku użycia "Anulowanie transakcji"
+
+
+```mermaid
+classDiagram
+    class Użytkownik {
+        - string username
+        - string sessionId
+        + void rozpocznijTransakcje()
+        + void anulujTransakcje()
+    }
+
+    class InterfejsBiletomatu {
+        - string currentScreen
+        + void wyswietlKomunikat(string komunikat)
+        + void resetujInterfejs()
+        + void wyswietlFormularzPowodu()
+    }
+
+    class Biletomat {
+        - string transactionId
+        + void przetwarzajAnulowanie()
+        + void zapiszPowodAnulowania(string powod)
+    }
+
+    class SystemTransakcyjny {
+        - map~string, Transaction~ transactions
+        + bool anulujTransakcje(string transactionId)
+        + void zapiszPowodAnulowania(string transactionId, string powod)
+    }
+
+    Użytkownik --> InterfejsBiletomatu : korzysta
+    InterfejsBiletomatu --> Biletomat : komunikuje się
+    Biletomat --> SystemTransakcyjny : współpracuje
+```
+
