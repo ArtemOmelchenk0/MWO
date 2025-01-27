@@ -269,7 +269,7 @@ sequenceDiagram
     end
 ```
 
-##**OPIS KLAS**
+## **OPIS KLAS**
 
 ### Analiza przypadku użycia "Wyświetlenie dostępnych biletów"
 
