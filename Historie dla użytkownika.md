@@ -266,3 +266,109 @@ sequenceDiagram
     S-->>B: Przekazuje potwierdzenie transakcji
     B->>U: Wyświetla potwierdzenie transakcji
 ```
+
+## **OPIS KLAS**
+
+### Analiza klas dla przypadku użycia "Szybki wybór rodzaju biletu"
+
+#### Klasy:
+1. **Biletomat**
+   - **Atrybuty**:
+     - `String nazwaBiletomatu`
+     - `List<Bilet> lokalnaListaBiletów`
+   - **Metody**:
+     - `void uruchomEkranPowitalny()`
+     - `void wyświetlKategorieBiletów()`
+     - `void pobierzListeBiletów(String kategoria)`
+     - `void wyświetlPodsumowanie(Bilet bilet)`
+     - `void anulujTransakcję()`
+     - `void wyświetlKomunikatBłąd(String komunikat)`
+
+2. **SerwerAplikacji**
+   - **Atrybuty**:
+     - `String adresSerwera`
+   - **Metody**:
+     - `List<Bilet> pobierzListeBiletów(String kategoria)`
+     - `void przekażPodsumowanie(Biletomat biletomat, Bilet bilet)`
+     - `void aktualizujStanBiletów(String idBiletu)`
+
+3. **BazaDanych**
+   - **Atrybuty**:
+     - `Map<String, Bilet> bilety`
+   - **Metody**:
+     - `List<Bilet> zwróćListeBiletów(String kategoria)`
+     - `void dodajBilet(Bilet bilet)`
+     - `void usuńBilet(String idBiletu)`
+
+4. **Bilet**
+   - **Atrybuty**:
+     - `String idBiletu`
+     - `String kategoria`
+     - `double cena`
+     - `Date dataWażności`
+   - **Metody**:
+     - `String getKategoria()`
+     - `double getCena()`
+     - `Date getDataWażności()`
+
+5. **Użytkownik**
+   - **Atrybuty**:
+     - `String nazwaUżytkownika`
+   - **Metody**:
+     - `void rozpocznijInterakcję(Biletomat biletomat)`
+     - `void wybierzBilet(Biletomat biletomat, String kategoria, Bilet bilet)`
+     - `void potwierdźWybor(Bilet bilet)`
+
+---
+
+### Diagram
+
+```mermaid
+classDiagram
+    class Biletomat {
+        - String nazwaBiletomatu
+        - List<Bilet> lokalnaListaBiletów
+        + void uruchomEkranPowitalny()
+        + void wyświetlKategorieBiletów()
+        + void pobierzListeBiletów(String kategoria)
+        + void wyświetlPodsumowanie(Bilet bilet)
+        + void anulujTransakcję()
+        + void wyświetlKomunikatBłąd(String komunikat)
+    }
+
+    class SerwerAplikacji {
+        - String adresSerwera
+        + List<Bilet> pobierzListeBiletów(String kategoria)
+        + void przekażPodsumowanie(Biletomat biletomat, Bilet bilet)
+        + void aktualizujStanBiletów(String idBiletu)
+    }
+
+    class BazaDanych {
+        - Map<String, Bilet> bilety
+        + List<Bilet> zwróćListeBiletów(String kategoria)
+        + void dodajBilet(Bilet bilet)
+        + void usuńBilet(String idBiletu)
+    }
+
+    class Bilet {
+        - String idBiletu
+        - String kategoria
+        - double cena
+        - Date dataWażności
+        + String getKategoria()
+        + double getCena()
+        + Date getDataWażności()
+    }
+
+    class Użytkownik {
+        - String nazwaUżytkownika
+        + void rozpocznijInterakcję(Biletomat biletomat)
+        + void wybierzBilet(Biletomat biletomat, String kategoria, Bilet bilet)
+        + void potwierdźWybor(Bilet bilet)
+    }
+
+    Biletomat --> SerwerAplikacji : pobiera listę biletów
+    SerwerAplikacji --> BazaDanych : sprawdza bilety
+    Biletomat --> Bilet : wyświetla podsumowanie
+    Użytkownik --> Biletomat : inicjuje interakcję
+``` 
